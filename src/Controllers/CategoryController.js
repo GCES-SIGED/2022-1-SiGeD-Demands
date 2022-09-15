@@ -1,6 +1,6 @@
 const moment = require('moment-timezone');
 const Category = require('../Models/CategorySchema');
-const validation = require('../Utils/validate');
+const { validateCategory } = require('../Utils/validate');
 
 const categoryGet = async (req, res) => {
   const categories = await Category.find();
@@ -11,7 +11,7 @@ const categoryGet = async (req, res) => {
 const categoryCreate = async (req, res) => {
   const { name, description, color } = req.body;
 
-  const validFields = validation.validateCategory(name, description, color);
+  const validFields = validateCategory(name, description, color);
 
   if (validFields.length) {
     return res.status(400).json({ status: validFields });
@@ -38,7 +38,7 @@ const categoryUpdate = async (req, res) => {
   const { id } = req.params;
   const { name, description, color } = req.body;
 
-  const validFields = validation.validateCategory(name, description, color);
+  const validFields = validateCategory(name, description, color);
 
   if (validFields.length) {
     return res.status(400).json({ status: validFields });

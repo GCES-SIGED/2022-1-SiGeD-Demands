@@ -4,7 +4,7 @@ const fs = require('fs');
 const pathR = require('path');
 const Demand = require('../Models/DemandSchema');
 const Category = require('../Models/CategorySchema');
-const validation = require('../Utils/validate');
+const { validateDemand, validateSectorID, validateDemandUpdate } = require('../Utils/validate');
 const { getClients } = require('../Services/Axios/clientService');
 const { getUser } = require('../Services/Axios/userService');
 const { verifyChanges } = require('../Utils/verifyChanges');
@@ -446,7 +446,7 @@ const demandCreate = async (req, res) => {
       demandDate,
     } = req.body;
 
-    const validFields = validation.validateDemand(
+    const validFields = validateDemand(
       name,
       description,
       categoryID,
@@ -511,7 +511,7 @@ const demandUpdate = async (req, res) => {
     name, description, process, categoryID, sectorID, clientID, userID,
   } = req.body;
 
-  const validFields = validation.validateDemand(
+  const validFields = validateDemand(
     name,
     description,
     categoryID,
@@ -611,7 +611,7 @@ const updateSectorDemand = async (req, res) => {
 
   const { sectorID } = req.body;
 
-  const validFields = validation.validateSectorID(sectorID);
+  const validFields = validateSectorID(sectorID);
 
   if (validFields.length) {
     return res.status(400).json({ status: validFields });
@@ -648,7 +648,7 @@ const forwardDemand = async (req, res) => {
 
   const { sectorID } = req.body;
 
-  const validField = validation.validateSectorID(sectorID);
+  const validField = validateSectorID(sectorID);
 
   if (validField.length) {
     return res.status(400).json({ status: validField });
@@ -693,7 +693,7 @@ const createDemandUpdate = async (req, res) => {
     important,
   } = req.body;
 
-  const validFields = validation.validateDemandUpdate(
+  const validFields = validateDemandUpdate(
     userName,
     description,
     visibilityRestriction,
@@ -750,7 +750,7 @@ const updateDemandUpdate = async (req, res) => {
     important,
   } = req.body;
 
-  const validFields = validation.validateDemandUpdate(
+  const validFields = validateDemandUpdate(
     userName,
     description,
     visibilityRestriction,
@@ -906,7 +906,7 @@ const uploadFile = async (req, res) => {
       updatedAt: moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate(),
     });
 
-    const validFields = validation.validateDemandUpdate(
+    const validFields = validateDemandUpdate(
       userName, description, visibility, userSector, userId, important,
     );
 

@@ -1,6 +1,6 @@
 const moment = require('moment-timezone');
 const Alert = require('../Models/AlertSchema');
-const validation = require('../Utils/validate');
+const { validateAlert } = require('../Utils/validate');
 
 const alertGet = async (req, res) => {
   const alerts = await Alert.find();
@@ -57,7 +57,7 @@ const alertCreate = async (req, res) => {
     name, description, date, alertClient, demandID, sectorID,
   } = req.body;
 
-  const validFields = validation.validateAlert(name, description, date, demandID, sectorID);
+  const validFields = validateAlert(name, description, date, demandID, sectorID);
 
   if (validFields.length) {
     return res.status(400).json({ status: validFields });
@@ -86,7 +86,7 @@ const alertUpdate = async (req, res) => {
     name, description, date, alertClient, checkbox, demandID, sectorID,
   } = req.body;
 
-  const validFields = validation.validateAlert(name, description, date, demandID, sectorID);
+  const validFields = validateAlert(name, description, date, demandID, sectorID);
 
   if (validFields.length) {
     return res.status(400).json({ status: validFields });
